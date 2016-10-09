@@ -1,7 +1,11 @@
 package main
 
 import (
+    "bytes"
+    "encoding/json"
     "fmt"
+    "io/ioutil"
+    "log"
     "net/http"
 )
 
@@ -24,19 +28,26 @@ type GetBalanceResult struct {
     } `json:"result"`
 }
 
+func check(e error) {
+    if e != nil {
+        log.Fatal(e)
+        return
+    }
+}
+
 func createAddress(w http.ResponseWriter, r *http.Request) {
     r.ParseForm()
 
     // Create address
-    jsonStr = []byte(`{"method": "createAddress","params": {"spendPublicKey": "` + r.FormValue("spendPublicKey") + `"}}`)
+    jsonStr := []byte(`{"method": "createAddress","params": {"spendPublicKey": "` + r.FormValue("spendPublicKey") + `"}}`)
     req, err := http.NewRequest("POST", walletRPC, bytes.NewBuffer(jsonStr))
     req.Header.Set("Content-Type", "application/json")
 
     client := &http.Client{}
-    resp, err = client.Do(req)
+    resp, err := client.Do(req)
     check(err)
     defer resp.Body.Close()
-    body, _ = ioutil.ReadAll(resp.Body)
+    body, _ := ioutil.ReadAll(resp.Body)
 
     var car CreateAddressResult
     err = json.Unmarshal(body, &car)
@@ -49,15 +60,15 @@ func getBalance(w http.ResponseWriter, r *http.Request) {
     r.ParseForm()
 
     // Get balance
-    jsonStr = []byte(`{"method": "getBalance","params": {"address": "` + r.FormValue("address") + `"}}`)
+    jsonStr := []byte(`{"method": "getBalance","params": {"address": "` + r.FormValue("address") + `"}}`)
     req, err := http.NewRequest("POST", walletRPC, bytes.NewBuffer(jsonStr))
     req.Header.Set("Content-Type", "application/json")
 
     client := &http.Client{}
-    resp, err = client.Do(req)
+    resp, err := client.Do(req)
     check(err)
     defer resp.Body.Close()
-    body, _ = ioutil.ReadAll(resp.Body)
+    body, _ := ioutil.ReadAll(resp.Body)
 
     var gbr GetBalanceResult
     err = json.Unmarshal(body, &gbr)
