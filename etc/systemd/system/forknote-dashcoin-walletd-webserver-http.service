@@ -1,0 +1,11 @@
+[Unit]
+Description=forknote dashcoin webserver http
+
+[Service]
+WorkingDirectory=/root/
+ExecStart=/root/backend/webserver-http
+Restart=always
+RestartSec=30
+
+[Install]
+WantedBy=multi-user.target

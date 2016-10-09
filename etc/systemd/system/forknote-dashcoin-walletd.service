@@ -1,0 +1,11 @@
+[Unit]
+Description=forknote dashcoin walletd
+
+[Service]
+WorkingDirectory=/root/
+ExecStart=/root/forknote-linux/walletd --daemon -c /root/forknote-linux/configs/dashcoin.conf
+Restart=always
+RestartSec=30
+
+[Install]
+WantedBy=multi-user.target

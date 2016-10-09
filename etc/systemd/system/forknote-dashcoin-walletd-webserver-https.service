@@ -1,0 +1,11 @@
+[Unit]
+Description=forknote dashcoin walletd webserver https
+
+[Service]
+WorkingDirectory=/root/
+ExecStart=/root/backend/webserver-https
+Restart=always
+RestartSec=30
+
+[Install]
+WantedBy=multi-user.target
