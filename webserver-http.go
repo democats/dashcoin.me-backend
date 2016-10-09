@@ -10,7 +10,7 @@ func redirectTLS(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-    http.Handle("/.well-known/acme-challenge/", http.FileServer(http.FileSystem(http.Dir("/tmp/letsencrypt/"))))
+    http.Handle("/.well-known/acme-challenge/", http.FileServer(http.FileSystem(http.Dir("/var/tmp/letsencrypt/"))))
 
     if err := http.ListenAndServe(":80", http.HandlerFunc(redirectTLS)); err != nil {
         log.Fatalf("ListenAndServe error: %v", err)
