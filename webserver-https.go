@@ -35,7 +35,7 @@ func check(e error) {
     }
 }
 
-func createAddress(w http.ResponseWriter, r *http.Request) {
+func loginCall(w http.ResponseWriter, r *http.Request) {
     r.ParseForm()
 
     // Create address
@@ -88,9 +88,9 @@ func getUnconfirmedTransactionHashes(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-    http.HandleFunc("/createAddress/", createAddress)
-    http.HandleFunc("/getBalance/", getBalance)
-    http.HandleFunc("/getTransactions/", getTransactions)
+    http.HandleFunc("/login", loginCall)
+    http.HandleFunc("/get_address_info", getBalance)
+    http.HandleFunc("/get_address_txs", getTransactions)
     http.HandleFunc("/getUnconfirmedTransactionHashes/", getUnconfirmedTransactionHashes)
 
     http.ListenAndServeTLS(":443", "/etc/letsencrypt/live/api.dashcoin.me/fullchain.pem", "/etc/letsencrypt/live/api.dashcoin.me/privkey.pem", nil)
