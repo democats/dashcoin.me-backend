@@ -36,6 +36,10 @@ func check(e error) {
 }
 
 func loginCall(w http.ResponseWriter, r *http.Request) {
+    if r.Method == "OPTIONS" {
+        return
+    }
+
     r.ParseForm()
 
     // Create address
@@ -53,7 +57,7 @@ func loginCall(w http.ResponseWriter, r *http.Request) {
     err = json.Unmarshal(body, &car)
     check(err)
 
-    fmt.Fprintf(w, "Page viewed: %s", r.URL.Path[1:])
+    fmt.Fprintf(w, "{\"new_address\": true}")
 }
 
 func getBalance(w http.ResponseWriter, r *http.Request) {
