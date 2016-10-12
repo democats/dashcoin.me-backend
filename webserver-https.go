@@ -90,14 +90,12 @@ func getUnconfirmedTransactionHashes(w http.ResponseWriter, r *http.Request) {
 
 func main() {
     crs := cors.New(cors.Options{AllowCredentials: true})
+    mux := http.NewServeMux()
 
-    handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-    })
+    mux.HandleFunc("/login", loginCall)
+    mux.HandleFunc("/get_address_info", getBalance)
+    mux.HandleFunc("/get_address_txs", getTransactions)
+    mux.HandleFunc("/getUnconfirmedTransactionHashes/", getUnconfirmedTransactionHashes)
 
-    http.HandleFunc("/login", loginCall)
-    http.HandleFunc("/get_address_info", getBalance)
-    http.HandleFunc("/get_address_txs", getTransactions)
-    http.HandleFunc("/getUnconfirmedTransactionHashes/", getUnconfirmedTransactionHashes)
-
-    http.ListenAndServeTLS(":443", "/etc/letsencrypt/live/api.dashcoin.me/fullchain.pem", "/etc/letsencrypt/live/api.dashcoin.me/privkey.pem", crs.Handler(handler))
+    http.ListenAndServeTLS(":443", "/etc/letsencrypt/live/api.dashcoin.me/fullchain.pem", "/etc/letsencrypt/live/api.dashcoin.me/privkey.pem", crs.Handler(mux))
 }
