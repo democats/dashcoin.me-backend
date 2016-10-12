@@ -92,6 +92,7 @@ func getUnconfirmedTransactionHashes(w http.ResponseWriter, r *http.Request) {
 func main() {
     crs := cors.New(cors.Options{
         AllowedOrigins:   []string{"*"},
+        AllowedHeaders:   []string{"*"},
         AllowCredentials: true,
         AllowedMethods:   []string{"POST"}})
 
