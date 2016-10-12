@@ -54,7 +54,8 @@ func loginCall(w http.ResponseWriter, r *http.Request) {
     err = json.Unmarshal(body, &car)
     check(err)
 
-    fmt.Fprintf(w, "{\"new_address\": true}")
+    fmt.Fprintf(w, "Page viewed: %s", r.URL.Path[1:])
+    //    fmt.Fprintf(w, "{\"new_address\": true}")
 }
 
 func getBalance(w http.ResponseWriter, r *http.Request) {
@@ -89,7 +90,9 @@ func getUnconfirmedTransactionHashes(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-    crs := cors.New(cors.Options{AllowCredentials: true})
+    crs := cors.New(cors.Options{
+        AllowCredentials: true,
+        AllowedMethods:   []string{"GET", "POST"}})
     mux := http.NewServeMux()
 
     mux.HandleFunc("/login", loginCall)
