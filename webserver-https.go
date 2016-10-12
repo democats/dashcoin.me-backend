@@ -92,9 +92,9 @@ func getUnconfirmedTransactionHashes(w http.ResponseWriter, r *http.Request) {
 func main() {
     crs := cors.New(cors.Options{
         AllowedOrigins:   []string{"*"},
-        AllowedHeaders:   []string{"*"},
+        AllowedHeaders:   []string{"*, DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Set-Cookie"},
         AllowCredentials: true,
-        AllowedMethods:   []string{"POST", "POST"}})
+        AllowedMethods:   []string{"OPTIONS", "POST"}})
 
     http.Handle("/login", crs.Handler(http.HandlerFunc(loginCall)))
     http.HandleFunc("/get_address_info", getBalance)
