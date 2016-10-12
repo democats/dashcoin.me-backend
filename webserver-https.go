@@ -4,6 +4,7 @@ import (
     "bytes"
     "encoding/json"
     "fmt"
+    "github.com/rs/cors"
     "io/ioutil"
     "log"
     "net/http"
@@ -36,10 +37,6 @@ func check(e error) {
 }
 
 func loginCall(w http.ResponseWriter, r *http.Request) {
-    if r.Method == "OPTIONS" {
-        return
-    }
-
     r.ParseForm()
 
     // Create address
@@ -92,10 +89,15 @@ func getUnconfirmedTransactionHashes(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
+    crs := cors.New(cors.Options{AllowCredentials: true})
+
+    handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+    })
+
     http.HandleFunc("/login", loginCall)
     http.HandleFunc("/get_address_info", getBalance)
     http.HandleFunc("/get_address_txs", getTransactions)
     http.HandleFunc("/getUnconfirmedTransactionHashes/", getUnconfirmedTransactionHashes)
 
-    http.ListenAndServeTLS(":443", "/etc/letsencrypt/live/api.dashcoin.me/fullchain.pem", "/etc/letsencrypt/live/api.dashcoin.me/privkey.pem", nil)
+    http.ListenAndServeTLS(":443", "/etc/letsencrypt/live/api.dashcoin.me/fullchain.pem", "/etc/letsencrypt/live/api.dashcoin.me/privkey.pem", crs.Handler(handler))
 }
