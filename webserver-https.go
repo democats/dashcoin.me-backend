@@ -94,7 +94,7 @@ func main() {
         AllowedOrigins:   []string{"*"},
         AllowedHeaders:   []string{"*"},
         AllowCredentials: true,
-        AllowedMethods:   []string{"POST"}})
+        AllowedMethods:   []string{"POST", "POST"}})
 
     http.Handle("/login", crs.Handler(http.HandlerFunc(loginCall)))
     http.HandleFunc("/get_address_info", getBalance)
