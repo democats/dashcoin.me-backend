@@ -102,6 +102,7 @@ type WalletdGetTransactionsResult struct {
 				Extra           string `json:"extra"`
 				Fee             int    `json:"fee"`
 				IsBase          bool   `json:"isBase"`
+				Mixin           int    `json:"mixin"`
 				PaymentID       string `json:"paymentId"`
 				State           int    `json:"state"`
 				Timestamp       int    `json:"timestamp"`
@@ -302,7 +303,7 @@ func getAddressInfoCall(w http.ResponseWriter, r *http.Request) {
 	for _, v1 := range walletdGetTransactionsResult.Result.Items[:] {
 		for _, v2 := range v1.Transactions[:] {
 			for _, v3 := range v2.Transfers[:] {
-				if v3.Address != "" {
+				if v3.Address == addressInfoRequest.Address {
 					totalReceived += v3.Amount
 				}
 
@@ -430,9 +431,10 @@ func getAddressTxsCall(w http.ResponseWriter, r *http.Request) {
 			transaction.UnlockTime = v2.UnlockTime
 			transaction.PaymentID = v2.PaymentID
 			transaction.Coinbase = v2.IsBase
+			transaction.Mixin = v2.Mixin
 
 			for _, v3 := range v2.Transfers[:] {
-				if v3.Address != "" {
+				if v3.Address == addressTxRequest.Address {
 					totalReceived += v3.Amount
 					txTotalReceived += v3.Amount
 				}
