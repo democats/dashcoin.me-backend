@@ -354,6 +354,7 @@ func getAddressTxsCall(w http.ResponseWriter, r *http.Request) {
 		UnlockTime    int                           `json:"unlock_time"`
 		Height        int                           `json:"height"`
 		Coinbase      bool                          `json:"coinbase"`
+		Mempool       bool                          `json:"mempool"`
 		Mixin         int                           `json:"mixin"`
 		SpentOutputs  []AddressTxRespondSpentOutput `json:"spent_outputs,omitempty"`
 		PaymentID     string                        `json:"payment_id,omitempty"`
@@ -432,6 +433,11 @@ func getAddressTxsCall(w http.ResponseWriter, r *http.Request) {
 			transaction.PaymentID = v2.PaymentID
 			transaction.Coinbase = v2.IsBase
 			transaction.Mixin = v2.Mixin
+			transaction.Mempool = false
+			if v2.Timestamp == 0 {
+				transaction.Timestamp = 2147483647
+				transaction.Mempool = true
+			}
 
 			for _, v3 := range v2.Transfers[:] {
 				if v3.Address == addressTxRequest.Address {
